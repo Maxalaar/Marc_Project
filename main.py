@@ -1,9 +1,12 @@
+import numpy as np
+
 from environments.identification_management.Identification_management import IdentificationManagement
 import gymnasium as gym
 import random
 
 from environments.identification_management.configuration import default_environment_configuration
 from policies.abstract import Policy
+from policies.brutal import Brutal
 from policies.combination import Combination
 from policies.random import Random
 from policies.voracious import Voracious
@@ -38,14 +41,26 @@ if __name__ == '__main__':
     environment_configuration: dict = default_environment_configuration
     environment_configuration['number_messages'] = 300
     environment_configuration['maximum_energy'] = 30
+
+    # First column: energy cost, Second column: percentage of correct responses
+    # environment_configuration['matrix_identification_factors'] = np.array([
+    #     [0.8, 0.8],
+    #     [0.4, 0.7],
+    #     [0.6, 0.75],
+    #     [0.2, 0.6],
+    # ])
+
     # environment_configuration['render_mode'] = 'text'   # text or None
 
     identification_management: gym.Env = IdentificationManagement(environment_configuration=environment_configuration)
     random: Policy = Random(identification_management.observation_space, identification_management.action_space)
     voracious: Policy = Voracious(identification_management.observation_space, identification_management.action_space)
-    maxime: Policy = Combination(identification_management.observation_space, identification_management.action_space)
+    combination: Policy = Combination(identification_management.observation_space, identification_management.action_space)
+    brutal: Policy = Brutal(identification_management.observation_space, identification_management.action_space)
 
     # print(f'Episode mean reward for random policy : {play_iteration(identification_management, random, 100)}')
-    print(f'Episode mean reward for combination policy : {play_iteration(identification_management, maxime, 100)}')
-    print(f'Episode mean reward for voracious policy : {play_iteration(identification_management, voracious, 100)}')
+    print(f'Episode mean reward for brutal policy : {play_iteration(identification_management, brutal, 500)}')
+    print(f'Episode mean reward for combination policy : {play_iteration(identification_management, combination, 500)}')
+    print(f'Episode mean reward for voracious policy : {play_iteration(identification_management, voracious, 500)}')
+
 
