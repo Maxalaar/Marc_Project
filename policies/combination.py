@@ -28,7 +28,7 @@ class Combination(Policy):
 
         if self.is_first_time_seeing_message:
             # Calculation of the budget for this message
-            current_energy = observation['current_energy']
+            current_energy = np.array(observation['current_energy'], dtype=np.float64)
             number_messages_remaining_before_end = observation['number_messages'] - observation['position_current_message']
             estimation_average_message_criticality = 0.5
             estimation_average_message_confidence = 0.5
@@ -70,9 +70,9 @@ class Combination(Policy):
             identification_is_false_probabilities = np.sum(identification_is_false_probabilities ** 1)
 
             if identification_is_true_probabilities > identification_is_false_probabilities:
-                is_real_source = 1
+                is_real_source = 0
             else:
-                is_real_source = -1
+                is_real_source = 2
 
             action = {
                 'is_real_source': is_real_source,

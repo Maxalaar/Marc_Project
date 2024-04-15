@@ -140,7 +140,7 @@ class IdentificationManagement(gym.Env):
         else:
             made_mistake = self._calling_identification_factors(action_calling_identification_factors)
             reward = 0
-            if made_mistake or np.all(action_calling_identification_factors == 0):
+            if made_mistake:
                 reward = -1 * self.current_message.criticality * self.current_message.trust
                 if self.position_current_message >= self.number_messages - 1:
                     self.is_terminated = True

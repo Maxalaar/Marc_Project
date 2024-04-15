@@ -54,9 +54,9 @@ class Brutal(Policy):
             calling_identification_factors = np.zeros(number_factor, dtype=np.int32)
 
             if np.any(response_identification_factors == 1):
-                is_real_source = 1
+                is_real_source = 0
             else:
-                is_real_source = -1
+                is_real_source = 2
 
             action = {
                 'is_real_source': is_real_source,

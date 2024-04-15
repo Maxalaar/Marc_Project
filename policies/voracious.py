@@ -1,3 +1,4 @@
+import random
 from typing import Union
 
 from gymnasium.spaces import Space
@@ -46,10 +47,14 @@ class Voracious(Policy):
                     energy_budget -= factor_energy_cost
                     calling_one_factor = True
 
+            is_real_source = 1
+            if not calling_one_factor:
+                is_real_source = random.choice([0, 2])
+
             calling_identification_factors = np.zeros(number_factor, dtype=np.int32)
             calling_identification_factors[identification_factors_call] = 1
             action = {
-                'is_real_source': 0,
+                'is_real_source': is_real_source,
                 'calling_identification_factors': calling_identification_factors,
             }
 
@@ -58,9 +63,9 @@ class Voracious(Policy):
             calling_identification_factors = np.zeros(number_factor, dtype=np.int32)
 
             if np.any(response_identification_factors == 1):
-                is_real_source = 1
+                is_real_source = 2
             else:
-                is_real_source = -1
+                is_real_source = 0
 
             action = {
                 'is_real_source': is_real_source,
